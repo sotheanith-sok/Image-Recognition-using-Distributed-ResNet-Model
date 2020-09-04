@@ -95,4 +95,4 @@ mnist_model.fit(dataset, steps_per_epoch=500 // hvd.size(), callbacks=callbacks,
 t1=time.time()
 total=t1-t0
 
-print("Total training time: "+total)
+print("Total training time: ",total)
