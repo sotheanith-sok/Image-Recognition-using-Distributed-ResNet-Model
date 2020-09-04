@@ -95,7 +95,4 @@ mnist_model.fit(dataset, steps_per_epoch=500 // hvd.size(), callbacks=callbacks,
 t1=time.time()
 total=t1-t0
 
-import datetime
-
-value = datetime.datetime.fromtimestamp(total)
-print(value.strftime('%Y-%m-%d %H:%M:%S'))
+print("Total training time: "+total)
