@@ -6,11 +6,11 @@ from tensorflow.keras import models, layers, optimizers
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import tensorflow as tf
 import horovod.tensorflow.keras as hvd
+import numpy as np
 
 
 
-
-#initialize horovod and get ranks
+# initialize horovod and get ranks
 hvd.init()
 gpus = tf.config.experimental.list_physical_devices('GPU')
 for gpu in gpus:
@@ -31,11 +31,15 @@ y_train = to_categorical(digit_y_train.flatten(),10)
 y_test = to_categorical(digit_y_test.flatten(),10)
 
 
-generator = ImageDataGenerator(rescale=1/255.)
-generator.fit(x_train)
+dataset = tf.data.Dataset.from_tensor_slices((tf.cast(x_train,tf.float32),tf.cast(y_train,tf.int32)))
+
+def something(x,y):
+    return tf.divide(x,255.),y
+
+dataset= dataset.shuffle(1000,reshuffle_each_iteration=Truec).repeat().batch(batch_size).map(something)
 
 
-dataset=tf.data.Dataset.from_generator(generator.flow,args=[x_train,y_train,batch_size],output_types=(tf.float64,tf.int8), output_shapes=((None,32,32,3),(None,10)))
+
 
 
 def ResnetLayers(previous_layers, filters=128, kernel_size=(3,3), padding='same', strides=1 , activation='relu'):
@@ -151,7 +155,7 @@ import time
 t0=time.time()
 
 #Train model
-model.fit(generator.flow(x_train,y_train,batch_size=batch_size), steps_per_epoch=500//hvd.size(), epochs=epochs, callbacks=callbacks, verbose=verbose)
+model.fit(dataset, steps_per_epoch=500//hvd.size(), epochs=epochs, callbacks=callbacks, verbose=verbose)
 
 t1=time.time()
 total=t1-t0
