@@ -36,10 +36,7 @@ dataset = tf.data.Dataset.from_tensor_slices((tf.cast(x_train,tf.float32),tf.cas
 def something(x,y):
     return tf.divide(x,255.),y
 
-dataset= dataset.shuffle(1000,reshuffle_each_iteration=Truec).repeat().batch(batch_size).map(something)
-
-
-
+dataset= dataset.shuffle(1000,reshuffle_each_iteration=True).repeat().batch(batch_size).map(something)
 
 
 def ResnetLayers(previous_layers, filters=128, kernel_size=(3,3), padding='same', strides=1 , activation='relu'):
