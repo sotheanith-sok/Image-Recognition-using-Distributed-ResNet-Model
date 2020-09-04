@@ -51,7 +51,7 @@ scaled_lr = 0.001 * hvd.size()
 opt = tf.optimizers.Adam(scaled_lr)
 
 # Horovod: add Horovod DistributedOptimizer.
-opt = hvd.DistributedOptimizer(opt)
+opt = hvd.DistributedOptimizer(opt, compression=hvd.Compression.fp16)
 
 # Horovod: Specify `experimental_run_tf_function=False` to ensure TensorFlow
 # uses hvd.DistributedOptimizer() to compute gradients.
