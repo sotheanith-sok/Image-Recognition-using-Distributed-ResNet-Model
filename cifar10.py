@@ -20,7 +20,7 @@ if gpus:
 
 
 #Hyperparameters
-batch_size = 128
+batch_size = 100
 learning_rate = 0.001
 epochs = 25
 
@@ -35,6 +35,7 @@ generator = ImageDataGenerator(rescale=1/255.)
 generator.fit(x_train)
 
 
+dataset=tf.data.Dataset.from_generator(generator.flow,args=[x_train,y_train,batch_size],output_types=(tf.float64,tf.int8), output_shapes=((None,32,32,3),(None,10)))
 
 
 def ResnetLayers(previous_layers, filters=128, kernel_size=(3,3), padding='same', strides=1 , activation='relu'):
@@ -150,7 +151,7 @@ import time
 t0=time.time()
 
 #Train model
-model.fit(generator.flow(x=x_train,y=y_train, batch_size=batch_size), steps_per_epoch=500//hvd.size(), epochs=epochs, callbacks=callbacks, verbose=verbose)
+model.fit(generator.flow(x_train,y_train,batch_size=batch_size), steps_per_epoch=500//hvd.size(), epochs=epochs, callbacks=callbacks, verbose=verbose)
 
 t1=time.time()
 total=t1-t0
