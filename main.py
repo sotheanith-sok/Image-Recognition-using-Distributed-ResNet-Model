@@ -87,4 +87,15 @@ verbose = 1 if hvd.rank() == 0 else 0
 
 # Train the model.
 # Horovod: adjust number of steps based on number of GPUs.
+import time
+t0=time.time()
+
 mnist_model.fit(dataset, steps_per_epoch=500 // hvd.size(), callbacks=callbacks, epochs=24, verbose=verbose)
+
+t1=time.time()
+total=t1-t0
+
+import datetime
+
+value = datetime.datetime.fromtimestamp(total)
+print(value.strftime('%Y-%m-%d %H:%M:%S'))
