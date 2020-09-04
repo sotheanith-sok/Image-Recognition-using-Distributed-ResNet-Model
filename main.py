@@ -64,18 +64,18 @@ callbacks = [
     # Horovod: broadcast initial variable states from rank 0 to all other processes.
     # This is necessary to ensure consistent initialization of all workers when
     # training is started with random weights or restored from a checkpoint.
-    hvd.callbacks.BroadcastGlobalVariablesCallback(0),
+    hvd.keras.callbacks.BroadcastGlobalVariablesCallback(0),
 
     # Horovod: average metrics among workers at the end of every epoch.
     #
     # Note: This callback must be in the list before the ReduceLROnPlateau,
     # TensorBoard or other metrics-based callbacks.
-    hvd.callbacks.MetricAverageCallback(),
+    hvd.keras.callbacks.MetricAverageCallback(),
 
     # Horovod: using `lr = 1.0 * hvd.size()` from the very beginning leads to worse final
     # accuracy. Scale the learning rate `lr = 1.0` ---> `lr = 1.0 * hvd.size()` during
     # the first three epochs. See https://arxiv.org/abs/1706.02677 for details.
-    hvd.callbacks.LearningRateWarmupCallback(warmup_epochs=3, initial_lr=scaled_lr, verbose=1),
+    hvd.keras.callbacks.LearningRateWarmupCallback(warmup_epochs=3, initial_lr=scaled_lr, verbose=1),
 ]
 
 # Horovod: save checkpoints only on worker 0 to prevent other workers from corrupting them.
