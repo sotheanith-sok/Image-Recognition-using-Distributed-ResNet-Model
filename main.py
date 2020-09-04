@@ -14,7 +14,7 @@
 # ==============================================================================
 
 import tensorflow as tf
-import horovod.tensorflow.keras as hvd
+import horovod.tensorflow as hvd
 
 # Horovod: initialize Horovod.
 hvd.init()
@@ -51,7 +51,7 @@ scaled_lr = 0.001 * hvd.size()
 opt = tf.optimizers.Adam(scaled_lr)
 
 # Horovod: add Horovod DistributedOptimizer.
-opt = hvd.DistributedOptimizer(opt, compression=hvd.Compression.fp16)
+opt = hvd.DistributedOptimizer(opt)
 
 # Horovod: Specify `experimental_run_tf_function=False` to ensure TensorFlow
 # uses hvd.DistributedOptimizer() to compute gradients.
