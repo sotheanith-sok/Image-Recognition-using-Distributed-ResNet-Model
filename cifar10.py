@@ -20,9 +20,9 @@ if gpus:
 
 
 #Hyperparameters
-batch_size = 32
+batch_size = 128
 learning_rate = 0.001
-epochs = 25
+epochs = 15
 
 #Load data
 (x_train, digit_y_train), (x_test, digit_y_test) = cifar10.load_data()
