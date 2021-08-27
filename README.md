@@ -1,7 +1,7 @@
 <h1 align="center" style="border: none">Image Recognition using Distributed ResNet Model</h1>
 
 ## Overview
-An implementation of a distributed ResNet model for classifying CIFAR-10 dataset.   
+An implementation of a distributed ResNet model for classifying CIFAR-10 and MNIST dataset.   
 
 ## Prerequisites
  - [Python](https://www.python.org/)
